@@ -6,6 +6,9 @@ services:
     image: 'bitnami/zookeeper:latest'
     ports:
       - '2181:2181'
+    volumes:
+      - C:/zookeeper/zookeeper_data:/var/lib/zookeeper/data
+      - C:/zookeeper/zookeeper_log:/var/lib/zookeeper/log
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
@@ -15,11 +18,11 @@ services:
     ports:
       - '9092:9092'
     volumes:
-      - C:/kafka/:/usr/var/kafka
+      - C:/kafka/:/home/kafka
     environment:
       - TZ=Russia/Moscow
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_LOG_DIRS=/usr/var/kafka
+      - KAFKA_LOG_DIRS=/home/kafka
       - KAFKA_ADVERTISED_HOST_NAME=localhost
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
@@ -27,5 +30,6 @@ services:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
       - KAFKA_NUM_IO_THREADS=20
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
     depends_on:
       - zookeeper
